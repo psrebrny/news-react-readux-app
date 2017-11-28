@@ -40,7 +40,6 @@ export const selectNews = (id) => {
   const request = fetch(`${URL}/articles?id=${id}`, {method: 'GET'})
       .then(response => response.json());
   
-  
   return {
     type: 'GET_SELECTED_NEWS',
     payload: request
@@ -80,6 +79,23 @@ export const handleLikes = (array, id, section, type) => {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({likes: array})
+  }).then(response => response.json());
+  
+  return {
+    type,
+    payload: request
+  };
+};
+
+
+export const addView = (views, id, section, type) => {
+  const request = fetch(`${URL}/${section}/${id}`, {
+    method: 'PATCH',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({views})
   }).then(response => response.json());
   
   return {

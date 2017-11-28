@@ -10,6 +10,8 @@ export default (state = {}, action) => {
       return {...state, selected: action.payload};
     case 'HANDLE_LIKES_ARTICLE':
       return {...state, selected: [action.payload]};
+    case 'ADD_VIEW_ARTICLE':
+      return {...state, selected: [action.payload]};
     default :
       return state;
   }

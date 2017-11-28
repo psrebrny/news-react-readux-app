@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { selectNews, clearSelectedNews } from '../actions';
+import { selectNews, clearSelectedNews, addView } from '../actions';
 import { bindActionCreators } from 'redux';
 
 import Counter from './LikesCounter';
@@ -9,7 +9,12 @@ import Counter from './LikesCounter';
 class News extends Component {
   
   componentDidMount() {
-    this.props.selectNews(this.props.match.params.id);
+    this.props.selectNews(this.props.match.params.id)
+        .then(response => {
+          const selected = Object.assign({}, response.payload[0]);
+          return this.props.addView(selected.views + 1, selected.id, 'articles', 'ADD_VIEW_ARTICLE');
+        });
+    
   }
   
   componentWillUnmount() {
@@ -72,7 +77,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     selectNews,
-    clearSelectedNews
+    clearSelectedNews,
+    addView
   }, dispatch);
 };
 

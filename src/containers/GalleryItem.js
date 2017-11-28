@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { selectGallery, clearSelectedGallery } from '../actions';
+import { selectGallery, clearSelectedGallery, addView } from '../actions';
 import { bindActionCreators } from 'redux';
 import Slider from 'react-slick';
 import Counter from '../containers/LikesCounter';
@@ -16,7 +16,11 @@ const settings = {
 class GalleryItem extends Component {
   
   componentDidMount() {
-    this.props.selectGallery(this.props.match.params.id);
+    this.props.selectGallery(this.props.match.params.id)
+        .then(response => {
+          const selected = Object.assign({}, response.payload[0]);
+          return this.props.addView(selected.views + 1, selected.id, 'galleries', 'ADD_VIEW_GALLERY');
+        })
   }
   
   componentWillUnmount() {
@@ -76,7 +80,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     selectGallery,
-    clearSelectedGallery
+    clearSelectedGallery,
+    addView
   }, dispatch);
 };
 
